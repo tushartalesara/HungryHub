@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hungry Hub</title>
+    <!-- Add Bootstrap CSS in the <head> section -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <!-- Add Bootstrap JS at the end of the <body> section -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+</head>
+
+<body>
+
+<!-- <form id="addAddressForm" th:action="@{'/restaurants/addItem/'+${restaurantId}}" method="post">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    <div class="form-group">
+        <label for="streetAddress">Street Address</label>
+        <input type="text" class="form-control" id="streetAddress" name="itemName" required>
+    </div>
+    <div class="form-group">
+        <label for="pincode">Pincode</label>
+        <input type="text" class="form-control" id="pincode" name="itemDescription" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Address</button>
+
+</form> -->
+<!-- <div>
+    <div class="row pl-3 ml-2">
+        <div th:each="order : ${orders}" class="col-md-4 mb-4">
+            <div class="card custom-card rounded shadow pl-3">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">ORDER ID</h6>
+                    <p class="card-text"><span th:text="${order.key.orderId}"></span></p>
+
+                    <h6 class="card-subtitle mb-2 text-muted">ORDER AMOUNT</h6>
+                    <p class="card-text"><span th:text="${order.key.totalAmount}"></span></p>
+                </div>
+
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">ITEMS</h6>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="entry : ${order.value}">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="card-text"><span th:text="${entry.value + 'x ' + entry.key.itemName}"></span></p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">ORDERED ON</h6>
+                    <p class="card-text" style="font-size: 0.875rem;">
+                        <span th:text="${order.key.orderTime}"></span>
+                    </p>
+                </div>
+
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">ORDER STATUS</h6>
+                    <p class="card-text" style="font-size: 0.875rem;">
+                        <span th:if="${order.key.orderStatus == 0}">Canceled</span>
+                        <span th:if="${order.key.orderStatus == 1}">Preparing</span>
+                        <span th:if="${order.key.orderStatus == 2}">Dispatched</span>
+                        <span th:if="${order.key.orderStatus == 3}">Delivered</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="container">
+    <h2 th:if="${#maps.size(orders) > 0}">ORDER STATUS</h2>
+
+
+    <div class="row pl-3 ml-2">
+        <div th:each="order : ${orders}" class="col-md-4 mb-4">
+
+
+            <div class="card  rounded  pl-3">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">ORDER ID</h6>
+                    <p class="card-text"><span th:text="${order.key.orderId}"></span></p>
+
+                    <h6 class="card-subtitle mb-2 text-muted">ORDER AMOUNT</h6>
+                    <p class="card-text"><span th:text="${order.key.totalAmount}"></span></p>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">ITEMS</h6>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="entry : ${order.value}">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="card-text"><span th:text="${entry.value} + 'x ' + ${entry.key.itemName}"></span></p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">ORDERED ON</h6>
+                    <p class="card-text" style="font-size: 0.875rem;">
+                        <span th:text="${order.key.orderTime}"></span>
+                    </p>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">ORDER STATUS</h6>
+                    <p class="card-text" style="font-size: 0.875rem;">
+                        <span th:if="${order.key.orderStatus == 0}">Canceled</span>
+                        <span th:if="${order.key.orderStatus == 1}">Preparing</span>
+                        <span th:if="${order.key.orderStatus == 2}">Dispatched</span>
+                        <span th:if="${order.key.orderStatus == 3}">Delivered</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addItemModalLabel">Add Item Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Item information form goes here -->
+                <form id="updateItemForm"  th:action="@{'/restaurants/manage/addItem/'+${restaurantId}}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <div class="form-group">
+                        <label for="itemName">Item Name</label>
+                        <input type="text" class="form-control" id="itemName" name="itemName" >
+                    </div>
+                    <div class="form-group">
+                        <label for="itemDescription">Item Description</label>
+                        <textarea class="form-control" id="itemDescription" name="itemDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" class="form-control" id="price" name="price">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="isVegetarian" name="isVegetarian">
+                        <label class="form-check-label" for="isVegetarian">Vegetarian</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Upload Image</label>
+                        <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Item</button>
+                </form>
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <h2>RESTAURANT ITEMS</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center" data-toggle="modal" data-target="#addItemModal">
+                    <div class="mb-4">
+                        <i class="fas fa-plus-circle fa-2x text-danger"></i>
+                    </div>
+                    <p class="font-roboto text-danger">Add Item</p>
+                </div>
+            </div>
+        </div>
+        <div th:each="item: ${items}" class="col-md-4">
+            <div class="card mb-4 border" style="width: 18rem;">
+
+                <img th:src="${item.imageUrl}" class="card-img-top" alt="Item Image" style="height: 200px;">
+                <div class="card-body" style="width: 18rem;">
+                    <h5 class="card-title" th:utext="${item.itemName}"></h5>
+                    <p class="card-text text-sm" th:utext="${item.itemDescription}"></p>
+                    <p class="card-text text-sm">Price: <span th:text="${item.price}"></span></p>
+                    <p class="card-text text-sm">Rating: <span th:text="${item.rating}"></span></p>
+                    <p class="card-text text-sm">Type: <span th:text="(${item.isVegeterian} == true) ? 'Veg' : 'Non-Veg'"></span></p>
+                    <p class="card-text text-sm">
+                        Availability: <span th:text="(${item.isAvailable} == true) ? 'In Stock' : 'Out of Stock'"></span>
+                    </p>
+                    <a th:href="@{'/restaurants/manage/updateItem/' + ${item.itemId}}"
+                       class="btn btn-primary"
+                       th:text="(${item.isAvailable} == true) ? 'Mark Unavailable' : 'Mark Available'">
+                    </a>
+                    <!-- Your HTML button -->
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- //  <div th:include="site/test_base.html :: test_base_scripts"></div> -->
+</body>
+
+</html>

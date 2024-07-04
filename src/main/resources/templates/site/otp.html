@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Hungry Hub Email OTP</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap " rel="stylesheet"/>
+</head>
+<body
+        style="
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #ffffff;
+      font-size: 14px;
+    "
+>
+<div
+        style="
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 45px 30px 60px;
+        background: #f4f7ff;
+        background-image: url('https://lh3.googleusercontent.com/u/0/drive-viewer/AK7aPaCPBellVzH1fLDaLdvd7onCArvshFX6si9tc0Yz7acu8Y_uuNauEON90k2S9V1-ciF83V8CCFmKCRosnZ8nIihdRtES=w1920-h1083');
+        background-repeat: no-repeat;
+        background-size: 800px 452px;
+        background-position: top center;
+        font-size: 14px;
+        color: #434343;
+      "
+>
+    <header>
+        <table style="width: 100%;">
+            <tbody>
+            <tr style="height: 0;">
+                <td>
+
+                </td>
+                <td style="text-align: right;">
+                <span
+                        style="font-size: 16px; line-height: 30px; color: #ffffff;" th:text="${date}"
+                >27th October 2023</span
+                >
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </header>
+
+    <main>
+        <div
+                style="
+            margin: 0;
+            margin-top: 70px;
+            padding: 92px 30px 115px;
+            background: #ffffff;
+            border-radius: 30px;
+            text-align: center;
+          "
+        >
+            <div style="width: 100%; max-width: 489px; margin: 0 auto;">
+                <h1
+                        style="
+                margin: 0;
+                font-size: 24px;
+                font-weight: 500;
+                color: #1f1f1f;
+              "
+                >
+                    Your OTP
+                </h1>
+                <p
+                        style="
+                margin: 0;
+                margin-top: 17px;
+                font-size: 16px;
+                font-weight: 500;
+              "
+                        th:text="'Hello '+${name}+','"
+                >
+                </p>
+                <p
+                        style="
+                margin: 0;
+                margin-top: 17px;
+                font-weight: 500;
+                letter-spacing: 0.56px;
+              "
+                        th:text="${text}"
+                >
+                    We're thrilled to have you on board with Hungry Hub, your gateway to culinary adventures! To ensure the security of your account, here's your One-Time Passcode (OTP) for verification:
+                </p>
+                <p
+                        style="
+                margin: 0;
+                margin-top: 20px;
+                font-size: 40px;
+                font-weight: 600;
+                letter-spacing: 25px;
+                color: #ba3d4f;
+              "
+                        th:text="${otp}"
+                >
+                    123456
+                </p>
+                <p
+                        style="
+                margin: 0;
+                margin-top: 17px;
+                font-weight: 500;
+                letter-spacing: 0.56px;
+              "
+                >
+                    Your safety is our priority, and verifying your account with this code will ensure smooth and secure access to all the savory delights waiting for you.
+                    <br/>
+                    <br/>
+                    Thank you for choosing Hungry Hub!
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+
+                    Tantalizingly yours,
+                    <br/>
+                    The Hungry Hub Team 🌮🍕
+                </p>
+            </div>
+        </div>
+
+        <p
+                style="
+            max-width: 400px;
+            margin: 0 auto;
+            margin-top: 90px;
+            text-align: center;
+            font-weight: 500;
+            color: #8c8c8c;
+          "
+        >
+            Need help? Ask at
+            <a
+                    href="mailto:contact@hungryhub.com"
+                    style="color: #499fb6; text-decoration: none;"
+            >contact@hungryhub.com</a
+            >
+        </p>
+    </main>
+
+    <footer
+            style="
+          width: 100%;
+          max-width: 490px;
+          margin: 20px auto 0;
+          text-align: center;
+          border-top: 1px solid #e6ebf1;
+        "
+    >
+        <p
+                style="
+            margin: 0;
+            margin-top: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #434343;
+          "
+        >
+            Hungry Hub
+        </p>
+        <p style="margin: 0; margin-top: 8px; color: #434343;">
+            IIT (BHU) Varanasi
+        </p>
+        <p style="margin: 0; margin-top: 16px; color: #434343;">
+            Copyright © 2023 Hungry Hub. All rights reserved.
+        </p>
+    </footer>
+</div>
+</body>
+</html>

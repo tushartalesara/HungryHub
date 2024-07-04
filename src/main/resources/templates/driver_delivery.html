@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" th:replace="base::layout(~{::section},'My Deliveries')">
+<head>
+    <meta charset="UTF-8">
+    <title>My Deliveries</title>
+</head>
+<body>
+<section>
+    <div class="container" th:if="${show}">
+        <!--        <div class="container col-xxl-8 px-4 py-5">-->
+        <!--            <div class="row flex-lg-row-reverse align-items-center g-5 py-5">-->
+        <!--                <div class="col-10 col-sm-8 col-lg-6">-->
+        <!--                    <img th:src="@{/assets/img/delivery_boy.jpg}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">-->
+        <!--                </div>-->
+        <!--                <div class="col-lg-6">-->
+        <!--                    <h1 class="display-5 fw-bold lh-1 mb-3">Your Previous Deliveries</h1>-->
+
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <h1 class="text-center" style="font-size: 220%">Your Previous Deliveries</h1>
+        <div class="row">
+            <div class="col-lg-6 my-3" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300"
+                 th:each="delivery: ${deliveries}">
+                <div class="logos-card restaurant-page ">
+                    <ul class="list-group my-3">
+                        <li class="list-group-item">Buyer's Name: <span th:text="${delivery.getBuyerName()}"></span></li>
+                        <li class="list-group-item">Buyer's Address: <span th:text="${delivery.getBuyerAddress()}"></span></li>
+                        <li class="list-group-item">
+                            <ul class="list-group" th:each="pair:${delivery.getItems()}">
+                                <li class="list-group-item" th:text="${pair.getFirst().getItemName()} + '  -  ' + ${pair.getSecond().getQuantity()}"></li>
+                            </ul>
+                        </li>
+                        <li class="list-group-item">Delivery Time : <span th:text="${delivery.getDeliveryTime()}"></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 py-5 my-5 text-center" th:unless="${show}">
+        <h1 class="display-5 fw-bold">No Deliveries Yet</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">You will be assigned a delivery as soon as we get an order.</p>
+        </div>
+    </div>
+</section>
+</body>
+</html>

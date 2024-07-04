@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en" th:replace="base::layout(~{::section},'Index')">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant items</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+
+<body class="menu-layer">
+    <section>
+        <!-- hero-section -->
+        <section class="hero-section gap" style="background-image: url('/assets/img/background-1.png');">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
+                        <div class="restaurant">
+                            <h1>The Best restaurants
+                                in your home</h1>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                            <div class="nice-select-one">
+                                <select class="nice-select Advice">
+                                    <option>Choose a Restaurant</option>
+                                    <option>Choose a Restaurant 1</option>
+                                    <option>Choose a Restaurant 2</option>
+                                    <option>Choose a Restaurant 3</option>
+                                    <option>Choose a Restaurant 4</option>
+                                </select>
+                                <a href="#" class="button button-2">Order Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">
+                        <div class="img-restaurant">
+                            <img alt="man" th:src="@{/assets/img/photo-1.png}">
+                            <div class="wilmington">
+                                <img alt="img" th:src="@{/assets/img/photo-2.jpg}">
+                                <div>
+                                    <p>Restaurant of the Month</p>
+                                    <h6>The Wilmington</h6>
+                                    <div>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-regular fa-star-half-stroke"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wilmington location-restaurant">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <div>
+                                    <h6>Restaurant</h6>
+                                    <p>In Your city</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="service-shows gap" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="comment-data comment-slide owl-carousel owl-theme" >
+                            <div class="author-text item" th:each="promocode: ${promocodes}" th:if="(${#temporals.format(#temporals.createNow(),'yyyy-MM-dd')} &gt; ${promocode.startDate.toString()}) and (${#temporals.format(#temporals.createNow(),'yyyy-MM-dd')} &lt; ${promocode.endDate.toString()})">
+                                <h4 th:text="${promocode.promoName}"></h4>
+                                <p th:text="${promocode.promoDescription}"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- works-section -->
+        <section class="works-section gap no-top">
+            <div class="container">
+                <div class="hading" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
+                    <h2>How it works</h2>
+                </div>
+                <div class="row ">
+                    <div class="col-lg-4 col-md-6 col-sm-12" data-aos="flip-up" data-aos-delay="200"
+                        data-aos-duration="300">
+                        <div class="work-card">
+                            <img alt="img" th:src="@{/assets/img/illustration-1.png}">
+                            <h4><span>01</span> Select Restaurant</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12" data-aos="flip-up" data-aos-delay="300"
+                        data-aos-duration="400">
+                        <div class="work-card">
+                            <img alt="img" th:src="@{/assets/img/illustration-2.png}">
+                            <h4><span>02</span> Select menu</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12" data-aos="flip-up" data-aos-delay="400"
+                        data-aos-duration="500">
+                        <div class="work-card">
+                            <img alt="img" th:src="@{/assets/img/illustration-3.png}">
+                            <h4><span>03</span> Wait for delivery</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- best-restaurants -->
+        <section class="best-restaurants gap" style="background:#fcfcfc">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
+                        <div class="city-restaurants">
+                            <h2>Best Restaurants in Your City</h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
+                        <div class="logos-card">
+                            <img alt="logo" th:src="@{/assets/img/logos-2.jpg}">
+                            <div class="cafa col-lg-8">
+                                <h4><a th:href="@{'/restaurants/' + ${restaurants[0].RestaurantId}}"
+                                        th:text="${restaurants[0].restaurantName}"></a></h4>
+                                <div class="d-flex justify-content-between">
+                                    <p>Rating: <span
+                                            th:utext="${restaurants[0].Rating} + ' (' + ${restaurants[0].NumberOfUsersRated} + ')' "></span>
+                                    </p>
+                                    <p th:if="${restaurants[0].IsVegeterian} == true"> <span style="color: green;"
+                                            th:utext="Veg" /></p>
+                                    <p th:if="${restaurants[0].IsVegeterian} == false"> <span
+                                            style="color: saddlebrown;" th:utext="Non-Veg" /></p>
+                                    <span
+                                        th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[0].StartTime.toString()}">
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &lt; ${restaurants[0].EndTime.toString()}"
+                                            style="color: green;">Open Now</p>
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[0].EndTime.toString()}"
+                                            style="color: red;">Closed</p>
+                                    </span>
+                                </div>
+                                <div class="cafa-button">
+                                    <p th:utext="${restaurants[0].StreetAddress} + ', ' + ${restaurants[0].Pincode}" />
+                                    <div class="cafa-button">
+                                        <p th:utext="'Phone No. : ' + ${restaurants[0].PhoneNumber}"></p>
+                                    </div>
+                                    <div class="cafa-button">
+                                        <a th:href="@{'/restaurants/' + ${restaurants[0].RestaurantId}}">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
+                        <div class="logos-card">
+                            <img alt="logo" th:src="@{/assets/img/logos-2.jpg}">
+                            <div class="cafa col-lg-8">
+                                <h4><a th:href="@{'/restaurants/' + ${restaurants[1].RestaurantId}}"
+                                        th:text="${restaurants[1].restaurantName}"></a></h4>
+                                <div class="d-flex justify-content-between">
+                                    <p>Rating: <span
+                                            th:utext="${restaurants[1].Rating} + ' (' + ${restaurants[1].NumberOfUsersRated} + ')' "></span>
+                                    </p>
+                                    <p th:if="${restaurants[1].IsVegeterian} == true"> <span style="color: green;"
+                                            th:utext="Veg" /></p>
+                                    <p th:if="${restaurants[1].IsVegeterian} == false"> <span
+                                            style="color: saddlebrown;" th:utext="Non-Veg" /></p>
+                                    <span
+                                        th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[1].StartTime.toString()}">
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &lt; ${restaurants[1].EndTime.toString()}"
+                                            style="color: green;">Open Now</p>
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[1].EndTime.toString()}"
+                                            style="color: red;">Closed</p>
+                                    </span>
+                                </div>
+                                <div class="cafa-button">
+                                    <p th:utext="${restaurants[1].StreetAddress} + ', ' + ${restaurants[1].Pincode}" />
+                                    <div class="cafa-button">
+                                        <p th:utext="'Phone No. : ' + ${restaurants[1].PhoneNumber}"></p>
+                                    </div>
+                                    <div class="cafa-button">
+                                        <a th:href="@{'/restaurants/' + ${restaurants[1].RestaurantId}}">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
+                        <div class="logos-card">
+                            <img alt="logo" th:src="@{/assets/img/logos-2.jpg}">
+                            <div class="cafa col-lg-8">
+                                <h4><a th:href="@{'/restaurants/' + ${restaurants[2].RestaurantId}}"
+                                        th:text="${restaurants[2].restaurantName}"></a></h4>
+                                <div class="d-flex justify-content-between">
+                                    <p>Rating: <span
+                                            th:utext="${restaurants[2].Rating} + ' (' + ${restaurants[2].NumberOfUsersRated} + ')' "></span>
+                                    </p>
+                                    <p th:if="${restaurants[2].IsVegeterian} == true"> <span style="color: green;"
+                                            th:utext="Veg" /></p>
+                                    <p th:if="${restaurants[2].IsVegeterian} == false"> <span
+                                            style="color: saddlebrown;" th:utext="Non-Veg" /></p>
+                                    <span
+                                        th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[2].StartTime.toString()}">
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &lt; ${restaurants[2].EndTime.toString()}"
+                                            style="color: green;">Open Now</p>
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[2].EndTime.toString()}"
+                                            style="color: red;">Closed</p>
+                                    </span>
+                                </div>
+                                <div class="cafa-button">
+                                    <p th:utext="${restaurants[2].StreetAddress} + ', ' + ${restaurants[2].Pincode}" />
+                                    <div class="cafa-button">
+                                        <p th:utext="'Phone No. : ' + ${restaurants[2].PhoneNumber}"></p>
+                                    </div>
+                                    <div class="cafa-button">
+                                        <a th:href="@{'/restaurants/' + ${restaurants[2].RestaurantId}}">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
+                        <div class="logos-card">
+                            <img alt="logo" th:src="@{/assets/img/logos-2.jpg}">
+                            <div class="cafa col-lg-8">
+                                <h4><a th:href="@{'/restaurants/' + ${restaurants[3].RestaurantId}}"
+                                        th:text="${restaurants[3].restaurantName}"></a></h4>
+                                <div class="d-flex justify-content-between">
+                                    <p>Rating: <span
+                                            th:utext="${restaurants[3].Rating} + ' (' + ${restaurants[3].NumberOfUsersRated} + ')' "></span>
+                                    </p>
+                                    <p th:if="${restaurants[3].IsVegeterian} == true"> <span style="color: green;"
+                                            th:utext="Veg" /></p>
+                                    <p th:if="${restaurants[3].IsVegeterian} == false"> <span
+                                            style="color: saddlebrown;" th:utext="Non-Veg" /></p>
+                                    <span
+                                        th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[3].StartTime.toString()}">
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &lt; ${restaurants[3].EndTime.toString()}"
+                                            style="color: green;">Open Now</p>
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[3].EndTime.toString()}"
+                                            style="color: red;">Closed</p>
+                                    </span>
+                                </div>
+                                <div class="cafa-button">
+                                    <p th:utext="${restaurants[3].StreetAddress} + ', ' + ${restaurants[3].Pincode}" />
+                                    <div class="cafa-button">
+                                        <p th:utext="'Phone No. : ' + ${restaurants[3].PhoneNumber}"></p>
+                                    </div>
+                                    <div class="cafa-button">
+                                        <a th:href="@{'/restaurants/' + ${restaurants[3].RestaurantId}}">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
+                        <div class="logos-card">
+                            <img alt="logo" th:src="@{/assets/img/logos-2.jpg}">
+                            <div class="cafa col-lg-8">
+                                <h4><a th:href="@{'/restaurants/' + ${restaurants[4].RestaurantId}}"
+                                        th:text="${restaurants[4].restaurantName}"></a></h4>
+                                <div class="d-flex justify-content-between">
+                                    <p>Rating: <span
+                                            th:utext="${restaurants[4].Rating} + ' (' + ${restaurants[4].NumberOfUsersRated} + ')' "></span>
+                                    </p>
+                                    <p th:if="${restaurants[4].IsVegeterian} == true"> <span style="color: green;"
+                                            th:utext="Veg" /></p>
+                                    <p th:if="${restaurants[4].IsVegeterian} == false"> <span
+                                            style="color: saddlebrown;" th:utext="Non-Veg" /></p>
+                                    <span
+                                        th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[4].StartTime.toString()}">
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &lt; ${restaurants[4].EndTime.toString()}"
+                                            style="color: green;">Open Now</p>
+                                        <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurants[4].EndTime.toString()}"
+                                            style="color: red;">Closed</p>
+                                    </span>
+                                </div>
+                                <div class="cafa-button">
+                                    <p th:utext="${restaurants[4].StreetAddress} + ', ' + ${restaurants[4].Pincode}" />
+                                    <div class="cafa-button">
+                                        <p th:utext="'Phone No. : ' + ${restaurants[4].PhoneNumber}"></p>
+                                    </div>
+                                    <div class="cafa-button">
+                                        <a th:href="@{'/restaurants/' + ${restaurants[4].RestaurantId}}">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-gap">
+                        <a th:href="@{/restaurants}" class="button button-2 non">See All<i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</body>
+
+</html>

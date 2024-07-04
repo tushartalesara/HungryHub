@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" th:replace="base::layout(~{::section},'Driver Dashboard')">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<section>
+    <div class="px-4 py-5 my-5 text-center">
+        <!--        <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+        <div class="container mb-5">
+        <div th:if="${show}">
+            <h1 class="display-5 fw-bold">Current Delivery</h1>
+            <div class="col-lg-6 mx-auto">
+                <ul class="list-group my-3">
+                    <li class="list-group-item">Buyer's Name: <span th:text="${buyer_name}"></span></li>
+                    <li class="list-group-item">Buyer's Address: <span th:text="${buyer_address}"></span></li>
+                    <li class="list-group-item">
+                        <ul class="list-group" th:each="pair:${pairs}">
+                            <li class="list-group-item" th:text="${pair.getFirst().getItemName()} + '  -  ' + ${pair.getSecond().getQuantity()}"></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a th:if="${orderstatus==1}" th:href="${'/driver/updateStatus/'}" style="color: white">
+                        <button type="button" class="btn btn-lg px-4 gap-3" style="background-color:rgba(76,116,115,255);color: white">Received</button>
+                    </a>
+                    <a th:href="${'/driver/updateStatus/'+pincode}" style="color: white">
+                        <button type="button" class="btn btn-lg px-4 gap-3" style="background-color:rgba(76,116,115,255);color: white">Delivered</button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <div th:unless="${show}">
+            <h1 class="display-5 fw-bold">No Current Delivery</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4">You will be assigned a delivery as soon as we get an order.</p>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+</body>
+</html>

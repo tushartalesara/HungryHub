@@ -1,0 +1,434 @@
+<!-- using deprecated include, doesn't matter. Insert has problems and not suitable for our cause.-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:include="~{site/test_base::head}">
+    <title>Cart - Hungry Hub</title>
+</head>
+<body class="menu-layer">
+<!-- loader start-->
+<div th:replace="~{site/test_base::test_base_loader}"></div>
+<!-- loader end-->
+
+<!-- header -->
+<header th:replace="~{site/test_base::test_base_header}"></header>
+<!-- hero-section -->
+<section class="hero-section about checkout gap" th:style="|background-image: @{~/assets/img/background-3.png};|">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="about-text pricing-table">
+                    <ul class="crumbs d-flex" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="#"><i class="fa-solid fa-right-long"></i> Cart </a></li>
+                    </ul>
+                    <h2 data-aos="fade-up"  data-aos-delay="300" data-aos-duration="400">Checkout</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- checkout-order -->
+<section class="gap" th:if="${present}">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-5 col-lg-12" data-aos="flip-up"  data-aos-delay="200" data-aos-duration="300">
+                <div class="checkout-order">
+                    <div class="title-checkout">
+                        <h2>Your Cart:</h2>
+                    </div>
+                    <div class="banner-wilmington">
+                        <img alt="logo" th:src="${restaurant.getImageUrl()}" style="max-height: 100px;">
+                        <h6 th:text="${restaurant.getRestaurantName()}"></h6>
+                    </div>
+                    <ul>
+                        <li th:each="cartItem: ${cartItems}" class="price-list" th:with="item=${items.get(cartItem.itemId)}">
+                            <i class="closeButton fa-solid fa-xmark" th:id="${cartItem.getItemId()}+'-remove'" th:onclick="|sendQuantityToServer('${cartItem.getItemId()}',0)|">&#10060;</i>
+                            <div class="counter-container">
+                                <div class="counter-food">
+                                    <img alt="food" th:src="${item.getImageUrl()}" style="max-height: 170px;">
+                                    <h4 th:text="${item.getItemName()}" style="min-width: 80px;">Pasta, kiwi and sauce chilli</h4>
+                                </div>
+                                <h3 th:text="${item.getPrice()*cartItem.getQuantity()/100.0}" th:id="${cartItem.getItemId()}+'-totalprice'"></h3>
+                            </div>
+                            <div class="price">
+                                <div>
+                                    <h2 th:text="${item.getPrice()/100.0}" th:id="${cartItem.getItemId()}+'-price'">39</h2>
+                                    <span>Price</span>
+                                </div>
+                                <div>
+                                    <div class="qty-input">
+                                        <button class="qty-count qty-count--minus" data-action="minus" type="button" th:onclick="|updateQuantity('${item.getItemId()}','0')|">-</button>
+                                        <input class="product-qty" type="number" name="product-qty" min="0" th:id="${item.getItemId()}+'-quantity'" th:value="${cartItem.quantity}" disabled>
+                                        <button class="qty-count qty-count--add" data-action="add" type="button" th:onclick="|updateQuantity('${item.getItemId()}','1')|">+</button>
+                                    </div>
+                                    <span>Quantity</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="totel-price" >
+                        <span>Total order:</span>
+                        <h5 id="total-price" th:text="${total.total/100.0}">137</h5>
+                    </div>
+                    <div class="totel-price" id="promocode-div">
+                        <span>Promo code: </span>
+                        <div>
+                            <input style="border-radius: 6px; height:45px; border-color: grey;" type="text" name="promocode" id="promocode" th:value="${promocode}">
+                            <button class="button-price" style="width: 80px; height: 50px;" onclick="apply_promocode()">Apply</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="totel-price">
+                        <span>Delivery:</span>
+                        <h5>Free</h5>
+                    </div>
+                    <div class="totel-price">
+                        <span id="discount-span">Discount: </span>
+                        <h5 id="discount-value" th:text="${total.discountValue/100.0}">0</h5>
+                    </div>
+                    <div class="totel-price" id="total-payment">
+                        <span>To pay:</span>
+                        <h2 id="final-price" th:text="${total.finalValue/100.0}">137</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="offset-xl-1 col-xl-6 col-lg-12" data-aos="flip-up"  data-aos-delay="300" data-aos-duration="400">
+                <form class="checkout-form">
+                    <h4 class="two">Delivery addresses</h4>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="addNewAddress">Add a new address  <input type="checkbox" id="addNewAddress" name="addressType" class="checkbox" checked></label>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="selectAddress" >Or select an existing <input type="checkbox" id="selectAddress" class="checkbox" name="addressType"></label>
+                        </div>
+                    </div>
+                    <br/>
+                    <div style="display: none" id="selectAddressDropdownDiv">
+                        <select class="nice-select" id="selectAddressDropdown" >
+                            <option th:each="userAddress : ${userAddresses}" th:value="${userAddress.getAddressId()}" th:text="${userAddress.getStreetAddress()}+', '+${userAddress.getPincode()}"></option>
+                        </select>
+                    </div>
+                    <div id="addNewAddressDiv">
+                        <input type="text" name="Name" placeholder="Street Address" id="streetAddress">
+                        <select class="nice-select" id="pincode_selection" >
+                            <option th:each="pincodeInfo : ${pincodeInfos}" th:text="${pincodeInfo.getPincode()}"></option>
+                        </select>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="text" name="cityname" th:value="${cityname}" disabled>
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" name="statename" th:value="${statename}" disabled>
+                            </div>
+                        </div>
+                        <span>* Restaurant only delivers to above locations</span>
+                    </div>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" id="csrf"/>                                    <div class="section text-center">
+                    <input type="hidden" th:value="${publicKey}" th:id="razorpay-pk"/>
+                    <input type="hidden" th:value="${cart.getCartId()}" th:id="cart-id"/>
+                    <button class="button-price" id="payButton">Pay securely using Razorpay</button>
+                    <script>
+
+                        const addNewAddress = document.getElementById("addNewAddress");
+                        const selectAddress = document.getElementById("selectAddress");
+                        const selectAddressDiv = document.getElementById("selectAddressDropdownDiv");
+                        const addNewAddressDiv = document.getElementById("addNewAddressDiv");
+                        const streetAddress = document.getElementById("streetAddress");
+                        showNewAddressForm();
+                        hideSelectAddressForm();
+
+                        function showNewAddressForm(){
+                            addNewAddressDiv.style.display = "block";
+                        }
+                        function hideNewAddressForm(){
+                            addNewAddressDiv.style.display = "none";
+                        }
+                        function showSelectAddressForm(){
+                            selectAddressDiv.style.display = "block";
+                        }
+                        function hideSelectAddressForm(){
+                            selectAddressDiv.style.display = "none";
+                        }
+                        addNewAddress.onclick = function (){
+                            if (addNewAddress.checked) showNewAddressForm(), hideSelectAddressForm(), selectAddress.checked = false;
+                            else hideNewAddressForm(), showSelectAddressForm(), selectAddress.checked = true;
+                        }
+                        selectAddress.onclick = function (){
+                            if (selectAddress.checked) showSelectAddressForm(), hideNewAddressForm(), addNewAddress.checked = false;
+                            else hideSelectAddressForm(), showNewAddressForm(), addNewAddress.checked = true;
+                        }
+
+                        document.getElementById("payButton").addEventListener("click", dothis);
+
+                        async function sendSuccess(response){
+                            console.log("Success response ", response)
+                            const url = '/cart/success/';
+                            var bodyValue = "_csrf="+ document.getElementById("csrf").value +"&razorpay_payment_id="+response.razorpay_payment_id+"&razorpay_order_id="+response.razorpay_order_id+"&razorpay_signature="+response.razorpay_signature+"&cart_id="+document.getElementById("cart-id").value+"&status=success";
+                            fetch(url,{
+                                method: 'post',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                },
+                                body: bodyValue
+                            }).then(rsp => {
+                                return rsp.text();
+                            }).then(rsp => {
+                                console.log(rsp);
+                                if (rsp === "Order placed successfully!")
+                                    alert("Order placed successfully!"),window.location.href = '/profile';
+                                else if (rsp === "No drivers available!")
+                                    alert("No drivers available! Try again later. The payment will be refunded in 24-48 hours");
+                                else if (rsp === "Payment failed!")
+                                    alert(rsp);
+                                else
+                                    alert("Some error has occurred! Try again later.");
+                            }).catch(error=>{
+                                console.log(error);
+                                alert("Payment verification failed! Check after some time");
+                            })
+
+                        }
+
+                        async function sendFailure(response){
+                            const url = '/cart/failure';
+                            fetch(url,{
+                                method: 'get',
+                            }).then().catch();
+                        }
+                        async function pay(event){
+                            event.preventDefault();
+                            const payButton = document.getElementById("payButton");
+                            payButton.setAttribute("disabled", "disabled");
+                            url = '/cart/charge';
+                            fetch(url,{
+                                method: 'GET',
+                                keepalive: 'true',
+                            }).then(response => {
+                                return response.text();
+                            }).then(responseObj => {
+                                responseObj = JSON.parse(responseObj);
+                                console.log(responseObj);
+                                if (responseObj.status=="created"){
+                                    var options = {
+                                        "key": document.getElementById("razorpay-pk").value,
+                                        "amount": responseObj.amount,
+                                        "currency": "INR",
+                                        "name": "Hungry Hub",
+                                        "description": "Test Transaction for cart "+document.getElementById("cart-id").value,
+                                        "image": "/assets/img/fav-icon.png",
+                                        "order_id": responseObj.id,
+                                        "handler": function (response){
+                                            console.log(response);
+                                            sendSuccess(response);
+                                        },
+                                        "prefill": {
+                                            "name": "Rohith Peddi",
+                                            "email": "someemail@hungryhub.com",
+                                            "contact": "1234567890"
+                                        },
+                                        "notes": {
+                                            "address": "Hungry Hub Corporate Office"
+                                        },
+                                        "theme": {
+                                            "color": "#FCC100",
+                                        },
+                                    }
+                                    var rzp1 = new Razorpay(options);
+                                    rzp1.on('payment.failed', function (response){
+                                        sendFailure(response);
+                                        alert(response.error.code);
+                                        alert(response.error.description);
+                                        alert(response.error.source);
+                                        alert(response.error.step);
+                                        alert(response.error.reason);
+                                        alert(response.error.metadata.order_id);
+                                    });
+                                    rzp1.open();
+                                    setTimeout(function(){payButton.removeAttribute("disabled");document.getElementById("payButton").addEventListener("click", dothis);}, 1000);
+                                }
+                                else{
+                                    alert("Payment failed!!");
+                                }
+                            }).catch(error => {
+                                // Handle any fetch or network errors here
+                                console.error('Fetch error:', error);
+                                alert("Payment failed!!");
+                            });
+                        }
+
+                        function dothis(event) {
+                            event.preventDefault();
+                            if (addNewAddress.checked === true){
+                                if (streetAddress == null || streetAddress.value == ""){
+                                    alert("Please enter a street valid address");
+                                    return;
+                                }
+                            }
+                            else{
+                                if (document.getElementById("selectAddressDropdown").value == ""){
+                                    alert("Please select an address or add a new one");
+                                    return;
+                                }
+                            }
+                            assign_address(event);
+                        }
+
+                        function assign_address(event){
+                            event.preventDefault();
+                            const url = '/cart/assign_address';
+                            var bodyValue = "_csrf="+ document.getElementById("csrf").value;
+                            if (addNewAddress.checked === true) bodyValue += "&address_type=new&street_address="+streetAddress.value+"&pincode="+document.getElementById("pincode_selection").value+"&addressId=0";
+                            else bodyValue += "&address_type=existing&addressId="+document.getElementById("selectAddressDropdown").value+"&street_address=0&pincode=0";
+                            fetch(url,{
+                                method: 'post',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                },
+                                body: bodyValue
+                            }).then(rsp => {
+                                return rsp.text();
+                            }).then(rsp => {
+                                console.log(rsp);
+                                pay(event);
+                            }).catch(error=>{
+                                console.log(error);
+                                alert("Some error has occurred! Try again later.");
+                            })
+                        }
+
+                    </script>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- checkout-order -->
+<section th:unless="${present}" class="gap" style="min-height: 500px;">
+    <div class="container">
+        <h1>Cart is Empty!</h1>
+    </div>
+</section>
+<!-- footer -->
+<footer th:replace="~{site/test_base::test_base_footer}"></footer>
+<div th:include="~{site/test_base::body_scripts}"></div>
+<script>
+    async function updateQuantity(itemId, action) {
+        const quantityInput = document.getElementById(itemId + '-quantity');
+        console.log(quantityInput.value);
+        let currentQuantity = parseInt(quantityInput.value, 10);
+        if (currentQuantity < 1) {
+            currentQuantity = 1;
+        }
+        if (action == '1') {
+            currentQuantity++;
+        } else if (action == '0' && currentQuantity > 1) {
+            currentQuantity--;
+        }
+        //
+        // // Now, you can send a POST request with the current quantity to your server
+        await sendQuantityToServer(itemId, currentQuantity);
+    }
+
+    async function apply_promocode(){
+        const promocode = document.getElementById('promocode');
+        const url = `/cart/try/${promocode.value}`;
+        fetch(url, {
+            method: 'GET'
+        }).then(response => {
+            updateFinalPrice();
+        })
+            .catch(error => {
+                // Handle any fetch or network errors here
+                console.error('Fetch error:', error);
+            });
+    }
+
+    function round(num){
+        return num / 100.00;
+    }
+
+    async function updateFinalPrice(){
+        const url = `/cart/total`;
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => {
+                return response.json(); // Get the response text as a promise
+            })
+            .then(responseObj => {
+                console.log(responseObj);
+                const totalPrice = document.getElementById('total-price');
+                totalPrice.textContent = round(responseObj.total);
+                const discountValue = document.getElementById('discount-value');
+                discountValue.textContent = round(responseObj.discountValue);
+                const finalPrice = document.getElementById('final-price');
+                finalPrice.textContent = round(responseObj.finalValue);
+                const displayPayPrice = document.getElementById('display-pay-price');
+                displayPayPrice.textContent = round(responseObj.finalValue/100.00);
+                const payPrice = document.getElementById('pay-price');
+                payPrice.value = round(responseObj.finalValue);
+                if (responseObj.valid==0){
+                    const promocode = document.getElementById('promocode');
+                    promocode.value = "";
+                }
+            })
+            .catch(error => {
+                // Handle any fetch or network errors here
+                console.error('Fetch error:', error);
+            });
+    }
+    async function sendQuantityToServer(itemId, quantity) {
+        const url = `/cart/add/${itemId}/${quantity}`;
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => {
+                return response.text(); // Get the response text as a promise
+            })
+            .then(responseText => {
+                console.log(responseText);
+                if (responseText === "redirect:/login") {
+                    // Handle the case where the response is "redirect:/login"
+                    // how to redirect to login page?
+                    window.location.href = '/login';
+                } else if (responseText === "item not found!") {
+                    // don't care. Someone trying to hack.
+                    // } else if (responseText === "New cart created.") {  // will be taken care by else
+                    //     // Handle the case where the response is "New cart created."
+                } else if (responseText === ""){
+                    // some error.
+                }
+                else {
+                    // success. Update the quantity in the UI and also for cart symbol according to resp. For now, just update the quantity in the UI
+                    const quantityInput = document.getElementById(itemId + '-quantity');
+                    quantityInput.value = quantity;
+                    // update total price
+                    const totalPrice = document.getElementById(itemId + '-totalprice');
+                    totalPrice.textContent = quantity * parseInt(responseText, 10)/100.00;
+                    // // update total payment
+                    updateFinalPrice();
+                }
+            })
+            .catch(error => {
+                // Handle any fetch or network errors here
+                console.error('Fetch error:', error);
+            });
+
+    }
+
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+
+
+
+
+
+
+
+
+
+
+

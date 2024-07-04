@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:include="~{site/test_base::head}">
+    <base href="/">
+    <title>Hungry Hub - Login</title>
+    <link th:href="@{/css/login.css}" rel="stylesheet" />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v2.1.9/css/unicons.css'>
+
+</head>
+<body>
+<section class="hero-section about checkout" style="padding-top: 0; border-top: 0;" >
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="about-text pricing-table">
+                    <h2 data-aos="fade-up"  data-aos-delay="300" data-aos-duration="400">Hungry Hub</h2>
+                    <div data-aos="fade-up"  data-aos-delay="400" data-aos-duration="500">
+                        <h6 class="mb-0 pb-3"><span>Register </span></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section >
+    <div class="container">
+        <div class="row">
+            <div class="offset-xl-3 col-xl-6 col-lg-12" data-aos="flip-up"  data-aos-delay="300" data-aos-duration="400">
+                <form class="checkout-form">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" th:id="_csrf"/>
+                    <h4 class="two">Register</h4>
+                    <br/>
+                    <div id="get_email" style="display: block;">
+                        <div >
+                            <input type="email" name="email" placeholder="Email" id="email">
+                        </div>
+                        <button class="button-price" id="register-button">Register</button>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-6" style="display: flex; justify-content: center;">
+                                <a href="/forgotpassword" style="align-items: center; text-align: center">Forgot Password</a>
+                            </div>
+                            <div class="col-lg-6" style="display: flex; justify-content: center;">
+                                <a href="/signin">Login</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="otp_reg" style="display: none;">
+                        <p>Email sent successfully! Please enter the otp</p>
+                        <input type="number" name="otp" placeholder="Enter OTP" id="otp">
+                        <input type="text" name="firstName" id="firstName" placeholder="First Name">
+                        <input type="text" name="lastName" id="lastName" placeholder="Last Name">
+                        <input type="number" name="phone" id="phone" placeholder="Phone Number">
+                        <input type="password" name="new_password" placeholder="New Password" id="np">
+                        <input type="password" name="confirm_password" placeholder="Confirm Password" id="cp">
+                        <button class="button-price" id="verify_otp" >Register</button>
+                    </div>
+                    <script>
+                        let register_button = document.getElementById("register-button");
+                        let get_email = document.getElementById("get_email");
+                        let otp_reg = document.getElementById("otp_reg");
+                        register_button.addEventListener("click", (event)=>{
+                            event.preventDefault();
+                            register_button.disabled = true;
+                            let email = document.getElementById("email").value;
+                            data = new URLSearchParams({
+                                email: email,
+                                _csrf: document.getElementById("_csrf").value
+                            });
+                            fetch("/register/email", {
+                                method: "POST",
+                                body: data
+                            }).then((response)=>{
+                                return response.text()
+                            }).then((data)=>{
+                                if(data === "success"){
+                                    get_email.style.display = "none";
+                                    otp_reg.style.display = "block";
+                                }
+                                else if (data == "User already exists"){
+                                    alert("User already exists! Please login");
+                                    window.location.href = "/signin";
+                                }
+                                else {
+                                    alert("Something went wrong! Please try again");
+                                }
+                            }
+                            ).catch((error)=> {
+                                    console.log(error)
+                                    alert("Something went wrong! Please try again");
+                                register_button.disabled = false;
+                            })
+                        })
+                        document.getElementById("verify_otp").addEventListener("click", (e)=>{
+                            e.preventDefault();
+                            verify_otp();
+                        });
+
+                        function verify_otp(){
+                            url = '/register'
+                            var otp = document.getElementById("otp").value;
+                            var np = document.getElementById("np").value;
+                            var cp = document.getElementById("cp").value;
+                            var firstName = document.getElementById("firstName").value;
+                            var lastName = document.getElementById("lastName").value;
+                            var phone = document.getElementById("phone").value;
+                            if (np!=cp){
+                                alert("Passwords do not match");
+                                return;
+                            }
+                            if (np.length<6) {
+                                alert("Password should be atleast 6 characters long");
+                                return;
+                            }
+                            if ((phone+"").length!=10){
+                                alert("Phone number should be 10 digits long");
+                                return;
+                            }
+                            if (firstName.length<1){
+                                alert("First name cannot be empty");
+                                return;
+                            }
+                            var data = {
+                                otp: otp,
+                                np: np,
+                                firstName: firstName,
+                                lastName: lastName,
+                                phone: phone,
+                                _csrf: document.getElementById("_csrf").value
+                            };
+                            fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: new URLSearchParams(data).toString()
+                            })
+                                .then(response => {
+                                    return response.text(); // Get the response text as a promise
+                                })
+                                .then((response) => {
+                                    if(response == "success"){
+                                        alert("User created successfully");
+                                        window.location.href = "/signin";
+                                    }
+                                    else if (response == "Invalid OTP"){
+                                        alert("Invalid OTP");
+                                    }
+                                    else alert("Some error has occured, please try again later!");
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                        }
+
+                    </script>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div th:include="~{site/test_base::body_scripts}"></div>
+</body>
+</html>

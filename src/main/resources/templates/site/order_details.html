@@ -1,0 +1,149 @@
+<!-- using deprecated include, doesn't matter. Insert has problems and not suitable for our cause.-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:include="~{site/test_base::head}">
+    <title th:text="${'Order #'+order.getOrderId()+' - Hungry Hub'}"></title>
+</head>
+<body class="menu-layer">
+<!-- loader start-->
+<div th:replace="~{site/test_base::test_base_loader}"></div>
+<!-- loader end-->
+
+<!-- header -->
+<header th:replace="~{site/test_base::test_base_header}"></header>
+<!-- hero-section -->
+<section class="hero-section about checkout gap" th:style="|background-image: @{~/assets/img/background-3.png};|">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="about-text pricing-table">
+                    <ul class="crumbs d-flex" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="#"><i class="fa-solid fa-right-long"></i> Order </a></li>
+                    </ul>
+                    <h2 data-aos="fade-up"  data-aos-delay="300" data-aos-duration="400" th:text="${'Order Page'}"></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- checkout-order -->
+<section class="gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-5 col-lg-12" data-aos="flip-up"  data-aos-delay="200" data-aos-duration="300">
+                <div class="checkout-order">
+                    <div class="title-checkout">
+                        <h2>Your Order Items:</h2>
+                    </div>
+                    <div class="banner-wilmington">
+                        <img alt="logo" th:src="${restaurant.getImageUrl()}" style="max-height: 100px;">
+                        <h6 th:text="${restaurant.getRestaurantName()}"></h6>
+                    </div>
+                    <ul>
+                        <li th:each="cartItem: ${cartItems}" class="price-list" th:with="item=${items.get(cartItem.itemId)}">
+                            <div class="counter-container">
+                                <div class="counter-food">
+                                    <img alt="food" th:src="${item.getImageUrl}" style="max-height: 170px;">
+                                    <h4 th:text="${item.getItemName()}" style="min-width: 80px;">Pasta, kiwi and sauce chilli</h4>
+                                </div>
+                                <h3 th:text="${item.getPrice()*cartItem.getQuantity()/100.0}" th:id="${cartItem.getItemId()}+'-totalprice'"></h3>
+                            </div>
+                            <div class="price">
+                                <div>
+                                    <h2 th:text="${item.getPrice()/100.0}" th:id="${cartItem.getItemId()}+'-price'">39</h2>
+                                    <span>Price</span>
+                                </div>
+                                <div>
+                                    <div class="qty-input">
+                                        <input class="product-qty" type="number" name="product-qty" min="0" th:id="${item.getItemId()}+'-quantity'" th:value="${cartItem.quantity}" disabled>
+                                    </div>
+                                    <span>Quantity</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="totel-price" id="total-payment">
+                        <span>Paid after discount: </span>
+                        <h2 id="final-price" th:text="${order.getTotalAmount()/100.0}">137</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="offset-xl-1 col-xl-6 col-lg-12" data-aos="flip-up"  data-aos-delay="300" data-aos-duration="400">
+                <div class="checkout-form">
+                    <h4 class="two">Order Status:
+                        <span th:if="${order.orderStatus==0}" style="color: saddlebrown; font-size: 40px;">
+                            Failed / Cancelled by Restaurant
+                        </span>
+                        <span th:if="${order.orderStatus==1}" style="color: green; font-size: 40px;">
+                            Preparing
+                        </span>
+                        <span th:if="${order.orderStatus==2}" style="color: green; font-size: 40px;">
+                            Dispatched
+                        </span>
+                        <span th:if="${order.orderStatus==3}" style="color: green; font-size: 40px;">
+                            Delivered
+                        </span>
+                    </h4>
+                    <br/>
+                    <h4>Driver Details: </h4>
+                    <div style="display: flex; justify-content: center;">
+                        <img th:src="${driver.getImageUrl()}" alt="Image of Driver" style="width: 150px; border-radius: 75px" >
+                    </div>
+                    <br/>
+                    <div style="display: flex; justify-content: center;">
+                        <h4 th:text="${driverDetails.getFirstName()+' '+driverDetails.getLastName()}"></h4>
+                    </div>
+                    <br/>
+                    <div style="display: flex; justify-content: center;">
+                        <h5 th:text="${'Rating: '+driver.getRating()}"></h5>
+                    </div>
+                    <div style="display: flex; justify-content: center;">
+                        <h5 th:text="${driverDetails.getPhoneNumber()}"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- checkout-order -->
+
+<section th:if="${order.orderStatus==3}" style="display: flex; justify-content: center;">
+    <h4 th:if="${order.isRated}">Thanks for Rating!</h4>
+    <div th:unless="${order.isRated}">
+        <input type="hidden" th:value="${order.getOrderId()}" id="rate_order_id">
+        <button class="button-price" id="rate">Rate Your Experience</button>
+        <script>
+            const rateButton = document.getElementById("rate");
+            rateButton.addEventListener("click", function () {
+                const orderId = document.getElementById("rate_order_id").value;
+                window.location.href = "/order/rate"+"/"+orderId;
+            });
+        </script>
+    </div>
+</section>
+
+<!-- footer -->
+<footer th:replace="~{site/test_base::test_base_footer}"></footer>
+<div th:include="~{site/test_base::body_scripts}"></div>
+<script>
+
+
+    function round(num){
+        return num / 100.00;
+    }
+
+</script>
+</body>
+
+
+
+
+
+
+
+
+
+
+
