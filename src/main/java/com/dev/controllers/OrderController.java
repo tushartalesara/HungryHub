@@ -95,7 +95,6 @@ public class OrderController {
 
     @PostMapping("/rate/{orderid}")
     public String rateOrder(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request, @PathVariable("orderid") long orderId){
-        System.out.println(request);
         User user = authenticatedUser.getAuthenticatedUser(userDetails);
         Order order = orderJdbcDao.getOrderById(orderId);
         if (order==null) return "redirect:/orders/my";
@@ -120,7 +119,6 @@ public class OrderController {
         restaurantJdbcDao.updateRestaurant(restaurant);
         order.setIsRated(true);
         orderJdbcDao.updateOrder(order);
-        System.out.println("driver rating updated to "+ driver.getRating());
         return "redirect:/order/"+orderId;
     }
 }

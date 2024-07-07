@@ -79,12 +79,10 @@ public class CartController {
             return "item not found!";
         }
         Cart cart = cartJdbcDao.getCurrentCart(user.getUserId());
-        System.out.println(cart);
         if (cart==null){
             cart = new Cart(user.getUserId(), false, item.getRestaurantId());
             cartJdbcDao.createCart(cart);
             cartItemsJdbcDao.createCartItems(new CartItems(cart.getCartId(), item.getItemId(), q));
-            System.out.println("New cart created.");
             return "New cart created.";
         }
         else if (cart.getRestaurantId()!=item.getRestaurantId()){
@@ -129,7 +127,6 @@ public class CartController {
         }
         int valid = 1;
         finalPrice = totalPrice;
-        System.out.println(cart);
         if (cart.getPromocodeId()!=0){
             Promocode promocode = promocodeJdbcDao.getPromocodeByPromocodeId(cart.getPromocodeId());
             if (promocode!=null){
@@ -160,9 +157,7 @@ public class CartController {
         if (cart==null){
             return;
         }
-        System.out.println(promocode);
         Promocode promocode1 = promocodeJdbcDao.getPromocodeByPromocodeName(promocode);
-        System.out.println(promocode1);
         if (promocode1==null){
             cart.setPromocodeId(0);
         }
@@ -184,7 +179,6 @@ public class CartController {
             var restaurant = restaurantJdbcDao.getRestaurantById(cart.getRestaurantId());
             model.addAttribute("restaurant", restaurant);
             List<CartItems> cartItems = cartItemsJdbcDao.getCartItemsByCartId(cart.getCartId());
-            System.out.println(cartItems);
             if (cartItems.isEmpty()) {
                 model.addAttribute("present", false);
             }else {
@@ -219,13 +213,11 @@ public class CartController {
         Cart cart = cartJdbcDao.getCurrentCart(user.getUserId());
         if (cart==null) return null;
         Total total = getCartTotal(userDetails);
-        System.out.println(total);
         PaymentObject paymentObject = new PaymentObject(publicKey, total.getFinalValue(), "Payment for cart "+cart.getCartId());
         Transactions transaction = new Transactions();
         transaction.setTransactionStatus(0);
         transaction.setCartId(cart.getCartId());
         var rzp = paymentService.charge(paymentObject, transaction);
-        System.out.println(rzp);
         transaction.setTransactionId((String) rzp.toJson().get("id"));
         transactionJdbcDao.createTransaction(transaction);
         return rzp.toString();
@@ -240,31 +232,23 @@ public class CartController {
     @PostMapping(value = "/success/")
     @ResponseBody
     public String success(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("razorpay_payment_id") String razorpay_payment_id, @RequestParam("razorpay_order_id") String razorpay_order_id, @RequestParam("razorpay_signature") String razorpay_signature) throws RazorpayException {
-        System.out.println("success");
-        System.out.println(razorpay_payment_id);
-        System.out.println(razorpay_order_id);
-        System.out.println(razorpay_signature);
         User user = authenticatedUser.getAuthenticatedUser(userDetails);
         if (user == null) return null;
         Cart cart = cartJdbcDao.getCurrentCart(user.getUserId());
         if (!paymentService.checkValidity(razorpay_order_id, razorpay_payment_id, razorpay_signature)){
-            System.out.println("verification failed");
             return "Payment failed!";
         }
         Transactions transaction = transactionJdbcDao.getTransactionById(razorpay_order_id);
         if (transaction==null) return "Payment failed!";
         transaction.setTransactionStatus(1);
         transactionJdbcDao.updateTransaction(transaction);
-        System.out.println("Came here");
         long status = orderService.createOrder(user, cart, getCartTotal(userDetails));
         if (status != 0){ // failure
             paymentService.initiateRefund(razorpay_order_id);
-            System.out.println("No drivers available!");
             return "No drivers available!";
         }
         cart.setStatus(true);
         cartJdbcDao.updateCart(cart);
-        System.out.println("Assigned driver!");
         return "Order placed successfully!";
     }
 
@@ -275,7 +259,6 @@ public class CartController {
         if (user==null) return null;
         Cart cart = cartJdbcDao.getCurrentCart(user.getUserId());
         if (cart==null) return null;
-//        System.out.println(payload);
         UserAddress userAddress = null;
         if (address_type.equals("new")){
             userAddress = new UserAddress(street_address, Long.parseLong(pincode), user.getUserId());
@@ -288,14 +271,4 @@ public class CartController {
         return "success";
     }
 }
-
-
-
-
-
-
-
-
-
-
 

@@ -66,7 +66,6 @@ public class RestaurantController {
             user = authenticatedUser.getAuthenticatedUser(userDetails);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("User not signed in");// user is not signed in
         }
         if (user==null)
             currentCart = new Cart();
@@ -75,7 +74,6 @@ public class RestaurantController {
                 currentCart = cartJdbcDao.getCurrentCart(user.getUserId());
             } catch (Exception e) {
                 System.out.println(e.getMessage()); // user has no cart
-                System.out.println("User has no cart");
             }
             if (currentCart==null)
                 currentCart = new Cart();
@@ -142,7 +140,6 @@ public class RestaurantController {
         Map fileName = cloudinaryImageService.upload(imageFile);
         String secureUrl = (String) fileName.get("secure_url");
         restaurant.setImageUrl(secureUrl);
-        System.out.println(fileName);
         boolean check = true;
         for (Privilege p: user.getPrivileges()) {
             if (p.getPrivilegeName().equals("ROLE_RESTAURANT")) {
@@ -261,7 +258,6 @@ public class RestaurantController {
             user = authenticatedUser.getAuthenticatedUser(userDetails);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("User not signed in");// user is not signed in
         }
         if (user==null)
             currentCart = new Cart();
@@ -270,7 +266,6 @@ public class RestaurantController {
                 currentCart = cartJdbcDao.getCurrentCart(user.getUserId());
             } catch (Exception e) {
                 System.out.println(e.getMessage()); // user has no cart
-                System.out.println("User has no cart");
             }
             if (currentCart==null)
                 currentCart = new Cart();
@@ -316,7 +311,6 @@ public class RestaurantController {
         // Now you can use the secureUrl as needed
         restaurant.setImageUrl(secureUrl);
         //  restaurant.setImageUrl(fileName.secure_url);
-        System.out.println(fileName);
         restaurantJdbcDao.createRestaurant(restaurant);
         // return "redirect:/restaurants/users/" + user.getUserId();
         return "redirect:/restaurants/my";

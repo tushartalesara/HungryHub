@@ -123,7 +123,6 @@ public class UserController {
                 return "success";
             }
             catch (Exception e){
-                System.out.println(e);
                 return "error";
             }
         }

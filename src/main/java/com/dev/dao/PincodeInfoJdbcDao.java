@@ -43,7 +43,6 @@ public class PincodeInfoJdbcDao {
             return namedParameterJdbcTemplate.queryForObject(sql, params, pincodeInfoRowMapper);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return null;
         }
     }

@@ -42,7 +42,7 @@ public class CartJdbcDao {
         map.put("Status", cart.isStatus());
         map.put("RestaurantId", cart.getRestaurantId());
         map.put("PromocodeId", cart.getPromocodeId()==0?null:cart.getPromocodeId());
-        map.put("AddressId", cart.getAddressId());
+        map.put("AddressId", cart.getAddressId()==0?null:cart.getAddressId());
         return map;
     }
 
@@ -58,7 +58,6 @@ public class CartJdbcDao {
             return namedParameterJdbcTemplate.query(sql, params, cartRowMapper).get(0);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -68,7 +67,6 @@ public class CartJdbcDao {
             return namedParameterJdbcTemplate.query(sql, params, cartRowMapper);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return null;
         }
     }

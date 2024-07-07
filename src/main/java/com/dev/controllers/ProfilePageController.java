@@ -51,7 +51,6 @@ public class ProfilePageController {
         if (user==null){// cant add. user not logged in. Actually should be redirected to login page.
             return "redirect:/login";
         }
-        System.out.println(user.getUserId());
 
         model.addAttribute("userAddresses",userAddressJdbcDao.getUserAddressesByUserId(user.getUserId()) );
         model.addAttribute("user",userJdbcDao.getUserById(user.getUserId()) );
@@ -71,7 +70,6 @@ public class ProfilePageController {
             orderCartItemsMap.put(order, cartItemsQuantityMap);
 
         }
-        System.out.println(orderCartItemsMap);
         model.addAttribute("orders", orderCartItemsMap);
 
         return "profilepage";
@@ -80,7 +78,6 @@ public class ProfilePageController {
     @PostMapping(value = "/profile/deleteAddress/{id}")
     public String deleteUserAddress(@PathVariable("id") long id) {
         userAddressJdbcDao.deleteUserAddress(id);
-        System.out.println(id);
         return "redirect:/profile";
     }
 
@@ -93,7 +90,6 @@ public class ProfilePageController {
             return "redirect:/profile";
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
             return "redirect:/profile";
         }
     }
@@ -106,7 +102,6 @@ public class ProfilePageController {
             return "redirect:/profile";
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
             return "redirect:/profile";
         }
 
@@ -124,7 +119,6 @@ public class ProfilePageController {
             return "redirect:/profile";
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
             return "redirect:/profile";
         }
 
@@ -140,7 +134,6 @@ public class ProfilePageController {
         try {
             User user1 = authenticatedUser.getAuthenticatedUser(userDetails);
             if (!user1.getUserPassword().equals(currentPassword)) {
-                System.out.println("incorrent password");
                 throw new IllegalArgumentException("Current password is incorrect");
             }
             if (!userPassword.equals(repeateUserPassword)) {
@@ -156,7 +149,6 @@ public class ProfilePageController {
             return "redirect:/profile";
         }
         catch (Exception e) {
-            System.out.println("anmol kulshreshtha" +e);
             return "redirect:/profile";
         }
 
@@ -168,7 +160,6 @@ public class ProfilePageController {
     @RequestMapping("/profile/orders")
     public String profileUserOrders(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         User user = authenticatedUser.getAuthenticatedUser(userDetails);
-        System.out.println(user.getUserId());
         if (user==null){// cant add. user not logged in. Actually should be redirected to login page.
             return "redirect:/login";
         }

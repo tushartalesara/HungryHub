@@ -45,7 +45,6 @@ public class CartItemsJdbcDao {
             return namedParameterJdbcTemplate.query(sql, params, cartItemsRowMapper).get(0);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return null;
         }
     }

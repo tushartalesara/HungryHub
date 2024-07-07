@@ -1,19 +1,3 @@
-const navbar = document.querySelector('#navBar');
-// const content = document.querySelector('#content-id');
-// console.log("hello");
-// const t = navbar.offsetTop;
-//
-// function stickynavbar() {
-//     if (window.scrollY >= t) {
-//         navbar.classList.add('sticky');
-//         content.classList.add('content-class');
-//     } else {
-//         navbar.classList.remove('sticky');
-//         content.classList.remove('content-class');
-//     }
-// }
-// window.addEventListener('scroll', stickynavbar);
-
 // search function for searching restaurants and items
 const search=()=>{
     const searchElement = document.getElementById("search-input");
@@ -101,65 +85,6 @@ const getRestaurant = ()=>{
         window.location.href = `http://localhost:8090/restaurants/searchItem/${query}`;
     }
 }
-
-// const topRating = ()=>{
-//     console.log("hello");
-//     const topRatingCity = document.getElementById("topRatingCity");
-//     const query = topRatingCity.value;
-//     console.log(query);
-//     let url = `http://localhost:8090/toprating/${query}`;
-//     const topRatedRest = document.getElementById("topRatedRest");
-//     fetch(url)
-//         .then((response)=>{
-//             return response.json();
-//         })
-//         .then((data)=>{
-//             if(data.length>0){
-//                 let text = `<div class="list-group">`;
-//                 data.forEach((restaurant)=>{
-//                     text += `<div class="logos-card">
-//                             <img alt="logo" th:src="@{/assets/img/logos-2.jpg}">
-//                             <div class="cafa col-lg-8">
-//                                 <h4><a th:href="@{'/restaurants/' + ${restaurant.RestaurantId}}"
-//                                         th:text="${restaurant.restaurantName}"></a></h4>
-//                                 <div class="d-flex justify-content-between">
-//                                     <p>Rating: <span
-//                                             th:utext="${restaurant.Rating} + ' (' + ${restaurant.NumberOfUsersRated} + ')' "></span>
-//                                     </p>
-//                                     <p th:if="${restaurant.IsVegeterian} == true"> <span style="color: green;"
-//                                             th:utext="Veg" /></p>
-//                                     <p th:if="${restaurant.IsVegeterian} == false"> <span
-//                                             style="color: saddlebrown;" th:utext="Non-Veg" /></p>
-//                                     <span
-//                                         th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurant.StartTime.toString()}">
-//                                         <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &lt; ${restaurant.EndTime.toString()}"
-//                                             style="color: green;">Open Now</p>
-//                                         <p th:if="${#temporals.format(#temporals.createNow(),'HH:mm:ss')} &gt; ${restaurant.EndTime.toString()}"
-//                                             style="color: red;">Closed</p>
-//                                     </span>
-//                                 </div>
-//                                 <div class="cafa-button">
-//                                     <p th:utext="${restaurant.StreetAddress} + ', ' + ${restaurant.Pincode}" />
-//                                     <div class="cafa-button">
-//                                         <p th:utext="'Phone No. : ' + ${restaurant.PhoneNumber}"></p>
-//                                     </div>
-//                                     <div class="cafa-button">
-//                                         <a th:href="@{'/restaurants/' + ${restaurant.RestaurantId}}">View More</a>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                         </div>`;
-//                 })
-//                 // text += `</div>`;
-//                 topRatedRest.innerHTML = text;
-//             }
-//             else{
-//                 topRatedRest.innerHTML = "";
-//             }
-//
-//         })
-//
-// }
 
 // script of profile page
 function validatePasswords() {

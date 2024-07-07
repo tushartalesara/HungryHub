@@ -62,7 +62,6 @@ public class OrderJdbcDao {
         try{
             return template.query(sql, params, rowMapper).get(0);
         }catch (Exception e){
-            System.out.println(e);
             return null;
         }
     }
@@ -76,8 +75,6 @@ public class OrderJdbcDao {
         String sql = "SELECT * FROM orders WHERE CartId = :cartId";
         Map<String, Object> params = new HashMap<>();
         params.put("cartId", cartId);
-        System.out.println("kkkkkkkkkkkkkkkkk");
-        System.out.println(template.query(sql, params, rowMapper));
         return getOrder(sql, params);
     }
 

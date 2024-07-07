@@ -78,8 +78,7 @@
                                                         <h2 th:utext="'Rs. ' + ${item.price/100}"
                                                             style="font-size: xx-large;"></h2>
                                                         <div class="qty-input">
-                                                            <button class="qty-count qty-count--minus"
-                                                            th:id="${item.itemId}+'-plus'" th:attr="onclick=|updateQuantity('${item.itemId}', '0')|">-</button>
+                                                            <button class="qty-count qty-count--minus" th:id="${item.itemId}+'-plus'" th:attr="onclick=|updateQuantity('${item.itemId}', '0')|">-</button>
                                                             <input class="product-qty" type="number" th:id="${item.itemId}+'-quantity'" min="0" th:value="${cartItemsMap.get(item.itemId)}">
                                                             <button class="qty-count qty-count--add" th:id="${item.itemId}+'-minus'" th:attr="onclick=|updateQuantity(${item.itemId}, '1')|" type="button">+</button>
                                                         </div>

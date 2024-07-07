@@ -50,7 +50,6 @@ public class UserAddressJdbcDao {
             return namedParameterJdbcTemplate.query(sql, params, rowMapper).get(0);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return null;
         }
     }

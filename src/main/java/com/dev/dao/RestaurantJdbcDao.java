@@ -68,7 +68,6 @@ public class RestaurantJdbcDao {
             return namedParameterJdbcTemplate.queryForObject(sql, params, restaurantRowMapper);
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
             return null;
         }
     }

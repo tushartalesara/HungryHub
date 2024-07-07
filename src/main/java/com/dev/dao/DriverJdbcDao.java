@@ -51,7 +51,6 @@ public class DriverJdbcDao {
             return template.query(sql, params, driverRowMapper).get(0);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -101,7 +100,6 @@ public class DriverJdbcDao {
             template.update(sql, params);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
         }
     }
 

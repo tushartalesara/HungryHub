@@ -53,13 +53,11 @@ public class ItemJdbcDao {
             return namedParameterJdbcTemplate.queryForObject(sql, params, userRowMapper);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return null;
         }
     }
 
     public void createItem(Item item) {
-        System.out.println(item);
         String sql = "INSERT INTO Items (ItemId, ItemName, RestaurantId, IsVegeterian, Price, ItemDescription, IsAvailable, Rating, NumberOfUsersRated, ImageUrl) VALUES (:ItemId, :ItemName, :RestaurantId, :IsVegeterian, :Price, :ItemDescription, :IsAvailable, :Rating, :NumberOfUsersRated, :ImageUrl)";
         HashMap<String, Object> params = getItemMap(item);
         namedParameterJdbcTemplate.update(sql, params);

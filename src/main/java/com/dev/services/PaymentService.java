@@ -42,13 +42,11 @@ public class PaymentService {
         orderRequest.put("currency", "INR");
         orderRequest.put("receipt", ""+transactions.getTransactionId());
         Order order = razorpayClient.Orders.create(orderRequest);
-        System.out.println(order);
         return order;
     }
 
     @ExceptionHandler(RazorpayException.class)
     public String handleRazorpayException(RazorpayException e) throws RazorpayException{
-        System.out.println(e.getMessage());
         throw new RazorpayException(e.getMessage());
     }
 
@@ -67,7 +65,6 @@ public class PaymentService {
         for (var payment : payments) {
             if (payment.get("status").equals("captured")) {
                 var refund = razorpay.Payments.refund(payment.get("id").toString());
-                System.out.println(refund);
                 return 0;
             }
         }

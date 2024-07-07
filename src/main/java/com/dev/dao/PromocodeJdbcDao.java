@@ -58,7 +58,6 @@ public class PromocodeJdbcDao {
             return namedParameterJdbcTemplate.queryForObject(sql, params, promocodeRowMapper);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
             return null;
         }
     }

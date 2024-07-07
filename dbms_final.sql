@@ -1897,15 +1897,3 @@ CREATE INDEX cart_transactions ON Transactions(cartid);
 CREATE INDEX transaction_id ON Transactions(transactionid);
 CREATE INDEX cartitems ON cartitems(cartid);
 CREATE INDEX categoryname_filter ON Category(CategoryName);
-
-
-
-
-
-
-
-
-
-
-
-

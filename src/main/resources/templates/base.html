@@ -90,7 +90,6 @@
         /*----------------   quantity  -----------------------*/
         async function updateQuantity(itemId, action) {
             const quantityInput = document.getElementById(itemId + '-quantity');
-            // console.log(quantityInput.value);
             let currentQuantity = parseInt(quantityInput.value, 10);
             if (currentQuantity < 0) {
                 currentQuantity = 0;
@@ -113,7 +112,6 @@
                     return response.text(); // Get the response text as a promise
                 })
                 .then(responseText => {
-                    // console.log(responseText);
                     if (responseText === "redirect:/login") {
                         // Handle the case where the response is "redirect:/login"
                         // how to redirect to login page?

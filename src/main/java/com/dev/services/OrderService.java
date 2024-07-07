@@ -33,7 +33,6 @@ public class OrderService {
         driverService.setDriverActive(activeDriver.getDriverId());
         Order order = new Order(1, cart.getCartId(), activeDriver.getDriverId(), "url", new Timestamp(System.currentTimeMillis()), total.getFinalValue());
         orderJdbcDao.createOrder(order);
-        System.out.println("Created order successfully");
         return 0;
     }
 }

@@ -70,7 +70,6 @@ public class UserJdbcDao {
             return namedParameterJdbcTemplate.queryForObject(sql, params, userRowMapper);
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -104,7 +103,6 @@ public class UserJdbcDao {
         String sql = "UPDATE Users SET FirstName = :FirstName, LastName = :LastName, PhoneNumber = :PhoneNumber, Email = :Email, UserPassword = :UserPassword WHERE UserId = :UserId";
         userPrivilegeJdbcDao.deleteUserPriviligesByUserId(user.getUserId());
         for (Privilege privilege : user.getPrivileges()) {
-            System.out.println(privilege);
             userPrivilegeJdbcDao.createUserPrivilege(new com.dev.models.UserPrivilege(user.getUserId(), privilege.getPrivilegeId()));
         }
         HashMap<String, Object> params = getUserMap(user);
